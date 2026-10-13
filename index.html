@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>anything_resell_product</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 90px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .cart-trigger {
+      position: relative;
+      background: #f1f5f9;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-badge {
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #064e3b, #047857);
+      color: white;
+      padding: 48px 20px;
+      text-align: center;
+      border-radius: 0 0 28px 28px;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 500px;
+      margin: 0 auto 20px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      background: #ffffff;
+      color: #064e3b;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+    }
+
+    .card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      background: #f1f5f9;
+    }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+    }
+
+    .card-btn {
+      margin-top: auto;
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .card-btn:hover {
+      background: var(--primary);
+    }
+
+    /* Floating WhatsApp Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      left: 20px;
+      background: #25d366;
+      color: white;
+      border-radius: 50px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+      z-index: 50;
+    }
+
+    /* Cart Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      justify-content: flex-end;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-panel {
+      background: white;
+      width: 100%;
+      max-width: 440px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-total {
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-top: 2px dashed var(--border);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .order-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">anything_resell_<span>product</span></div>
+    <button class="cart-trigger" onclick="toggleCart()">
+      🛒 Cart <span class="cart-badge" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <section class="hero">
+    <h1>All In One Deals @ ₹199</h1>
+    <p>Premium quality items at flat clearance rates. Limited stocks available!</p>
+    <a href="#products" class="hero-btn">Shop Now</a>
+  </section>
+
+  <main class="container" id="products">
+    <div class="section-title">📦 Featured Products</div>
+    <div class="product-grid" id="productGrid"></div>
+  </main>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/917307004825?text=Hello%20I%20want%20to%20inquire%20about%20products" target="_blank" class="whatsapp-float">
+    💬 WhatsApp
+  </a>
+
+  <!-- Cart Modal -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2 class="modal-title">Shopping Cart</h2>
+        <button class="close-btn" onclick="toggleCart()">&times;</button>
+      </div>
+
+      <div class="cart-items" id="cartItemsContainer">
+        <p style="color: var(--text-muted); text-align: center;">Cart is empty!</p>
+      </div>
+
+      <div class="cart-total">
+        <span>Grand Total:</span>
+        <span id="grandTotal">₹0</span>
+      </div>
+
+      <form id="orderForm" action="https://formspree.io/f/your_form_id" method="POST">
+        <input type="text" name="name" id="custName" placeholder="Your Name" required>
+        <input type="tel" name="phone" id="custPhone" placeholder="Mobile / WhatsApp Number" required>
+        <textarea name="address" id="custAddress" rows="2" placeholder="Delivery Address & Notes" required></textarea>
+        <input type="hidden" name="order_items" id="orderItemsField">
+        <input type="hidden" name="total_amount" id="orderTotalField">
+
+        <div class="order-actions">
+          <button type="submit" class="btn-submit">📨 Submit Order (Email Alert)</button>
+          <button type="button" class="btn-whatsapp" onclick="sendViaWhatsApp()">📲 Order Directly on WhatsApp</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Gaming & Office Mouse", price: 199, image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&auto=format&fit=crop&q=80" },
+      { id: 2, name: "Casual Cotton Cloth", price: 199, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=80" },
+      { id: 3, name: "Pro Fighter Kite", price: 199, image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=500&auto=format&fit=crop&q=80" },
+      { id: 4, name: "Sneaker Casual Shoe", price: 199, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=80" }
+    ];
+
+    let cart = [];
+
+    function renderProducts() {
+      const container = document.getElementById("productGrid");
+      container.innerHTML = products.map(item => `
+        <div class="card">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="card-body">
+            <div class="card-title">${item.name}</div>
+            <div class="card-price">₹${item.price}</div>
+            <button class="card-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(id) {
+      const item = products.find(p => p.id === id);
+      const existing = cart.find(c => c.id === id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...item, qty: 1 });
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const countEl = document.getElementById("cartCount");
+      const container = document.getElementById("cartItemsContainer");
+      const totalEl = document.getElementById("grandTotal");
+
+      const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+      const grandTotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+      countEl.innerText = totalCount;
+      totalEl.innerText = "₹" + grandTotal;
+
+      if (cart.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Cart is empty!</p>';
+        return;
+      }
+
+      container.innerHTML = cart.map(i => `
+        <div class="cart-item">
+          <div>
+            <strong>${i.name}</strong><br>
+            <small>₹${i.price} × ${i.qty}</small>
+          </div>
+          <div>
+            <button onclick="changeQty(${i.id}, -1)" style="padding: 2px 8px;">-</button>
+            <span style="margin: 0 4px;">${i.qty}</span>
+            <button onclick="changeQty(${i.id}, 1)" style="padding: 2px 8px;">+</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Form data sync
+      document.getElementById("orderItemsField").value = cart.map(i => `${i.name} (${i.qty})`).join(", ");
+      document.getElementById("orderTotalField").value = "₹" + grandTotal;
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(c => c.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(c => c.id !== id);
+      }
+      updateCart();
+    }
+
+    function toggleCart() {
+      document.getElementById("cartModal").classList.toggle("active");
+    }
+
+    function sendViaWhatsApp() {
+      if (cart.length === 0) {
+        alert("Pehle cart me item add karein!");
+        return;
+      }
+
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+
+      if (!name || !phone || !address) {
+        alert("Kripya Name, Phone aur Address fill karein!");
+        return;
+      }
+
+      const itemsText = cart.map(i => `• ${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('\n');
+      const grandTotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+      const msg = `*New Order - anything_resell_product*\n\n` +
+                  `*Customer:* ${name}\n` +
+                  `*Phone:* ${phone}\n` +
+                  `*Address:* ${address}\n\n` +
+                  `*Order Items:*\n${itemsText}\n\n` +
+                  `*Total:* ₹${grandTotal}`;
+
+      const url = `https://wa.me/917307004825?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
